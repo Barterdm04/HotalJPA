@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration debug="false">
+    
+    <!-- property name="BHPAPP_HOME" value="/logs/bhpapp" /-->
+
+    
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/bhpapp_logs/bhpapp.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            
+            <!-- Monthly rollover (replace "-MM" with "-ww" for weekly, -MM-dd_HH for hourly -->
+            <fileNamePattern>/bhpapp_logs/logs.bu/bhpapp.log.%d{yyyy-ww}.zip</fileNamePattern>
+
+            <!-- keep [nn] history relative to rollover unit of time -->
+            <maxHistory>30</maxHistory> 
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender> 
+    
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- child level logging for application -->
+<!--    <logger name="net.byteshop.novotny.bhpappjee" level="INFO" />
+    <logger name="org.springframework" level="INFO" />-->
+
+    <!-- root level logging (children can override) -->
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

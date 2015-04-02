@@ -10,21 +10,14 @@ import com.mycompany.hoteljpa.ejb.HotelFacade;
 import com.mycompany.hoteljpa.entity.Hotel;
 import com.mycompany.hoteljpa.util.MySessionListener;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionListener;
 
 /**
  *
@@ -39,7 +32,7 @@ public class HotelController extends HttpServlet {
     private final static String REORDER = "reorder";
     private final static String SEARCH = "search";
     
-    @EJB
+    @Inject
     private HotelFacade hs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

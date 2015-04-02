@@ -6,11 +6,16 @@
 package com.mycompany.hoteljpa.ejb;
 
 import com.mycompany.hoteljpa.entity.Hotel;
+import com.mycompany.hoteljpa.entity.Hotel_;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -29,7 +34,7 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     public HotelFacade() {
         super(Hotel.class);
     }
-    
+      
     public List<Hotel> findHotelsBySearch(String searchField, String searchTerm, String orderBy) {
         Query q = this.getEntityManager().createQuery("select h from Hotel h where h." 
                 + searchField + " LIKE '%" + searchTerm + "%' order by h." + orderBy );
@@ -38,9 +43,14 @@ public class HotelFacade extends AbstractFacade<Hotel> {
     }
     
     public List<Hotel> findAllWithOrder(String orderBy){
-        Query q = this.getEntityManager().createQuery("select h from Hotel h order by h." + orderBy );
+        CriteriaBuilder builder = this.getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Hotel> criteriaQuery = builder.createQuery(Hotel.class);
+        Root<Hotel> hotel = criteriaQuery.from(Hotel.class);
+        criteriaQuery.orderBy(builder.desc(hotel.get(Hotel_.hotelId)));
+        TypedQuery<Hotel> q = this.getEntityManager().createQuery(criteriaQuery);
+        List<Hotel> hotels = q.getResultList();
         
-        return q.getResultList();
+        return hotels;
     }
     
     
